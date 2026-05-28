@@ -11,3 +11,50 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* index.css */
+
+@import url('https://fonts.google.com/share?selection.family=Karla|Markazi+Text');
+
+:root {
+  /* Colors */
+  --color-primary-green: #495E57;
+  --color-primary-yellow: #F4CE14;
+  --color-secondary-salmon: #EE9972;
+  --color-secondary-peach: #FBDABB;
+  --color-highlight-light: #EDEFEE;
+  --color-highlight-dark: #333333;
+
+  /* Typography */
+  --font-display: 'Markazi Text', serif;     /* titles/headings */
+  --font-body: 'Karla', sans-serif;          /* body/paragraphs */
+
+  /* Type scale */
+  --text-display: 40pt;
+  --text-subtitle: 40pt;
+  --text-lead: 18pt;
+  --text-card-title: 18pt;
+  --text-body: 16pt;
+  --text-highlight: 16pt;
+
+  /* Border radius */
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: var(--color-highlight-dark);
+  background-color: #fff;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
