@@ -1,21 +1,22 @@
+import logo from './icons_assets/restaurantfood.jpg';
+
 function Footer() {
   return (
     <footer className="footer">
-      <section className="footer__brand">
-        <h3>Little Lemon</h3>
-        <p>A family-owned Mediterranean restaurant in Chicago.</p>
-      </section>
  
-      <section className="footer__nav">
-        <h4>Doormat Navigation</h4>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/menu">Menu</a></li>
-          <li><a href="/reservations">Reservations</a></li>
-          <li><a href="/order">Order Online</a></li>
-          <li><a href="/login">Login</a></li>
-        </ul>
+      <section className="footer__nav footer__brand">
+        <img src={logo} alt="Little Lemon logo" className="footer__brand-logo" />
+        <div className="footer__brand-copy">
+          <h4>Doormat Navigation</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/menu">Menu</a></li>
+            <li><a href="/reservations">Reservations</a></li>
+            <li><a href="/order">Order Online</a></li>
+            <li><a href="/login">Login</a></li>
+          </ul>
+        </div>
       </section>
  
       <section className="footer__contact">
