@@ -1,6 +1,5 @@
 import './index.css';
 
-import Header from './Header';
 import Nav from './Nav';
 import Footer from './Footer';
 import { Routes, Route } from 'react-router-dom';
@@ -11,7 +10,6 @@ function App() {
   return (
     <>
       <Nav/>
-      <Header/>
       <Routes>
         <Route path="/" element={<HomePage/>} />
         <Route path="/booking" element={<BookingPage/>} />
