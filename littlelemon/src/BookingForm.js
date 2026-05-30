@@ -1,27 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import "./BookingForm.css";
 
-function BookingForm() {
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [guests, setGuests] = useState(1);
-  const [occasion, setOccasion] = useState("Birthday");
-
-  const [availableTimes] = useState([
-    "17:00",
-    "17:30",
-    "18:00",
-    "18:30",
-    "19:00",
-    "19:30",
-    "20:00",
-  ]);
-
+function BookingForm({
+  date,
+  time,
+  guests,
+  occasion,
+  availableTimes = [],
+  onDateChange,
+  onTimeChange,
+  onGuestsChange,
+  onOccasionChange,
+  onSubmit,
+}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const reservation = { date, time, guests, occasion };
-    console.log("Reservation submitted:", reservation);
-    alert("Reservation submitted! Check console for details.");
+    if (onSubmit) onSubmit(reservation);
   };
 
   return (
@@ -32,7 +27,10 @@ function BookingForm() {
           type="date"
           id="res-date"
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (onDateChange) onDateChange(val);
+          }}
           required
         />
       </div>
@@ -42,7 +40,7 @@ function BookingForm() {
         <select
           id="res-time"
           value={time}
-          onChange={(e) => setTime(e.target.value)}
+          onChange={(e) => onTimeChange && onTimeChange(e.target.value)}
           required
         >
           <option value="" disabled>
@@ -62,7 +60,7 @@ function BookingForm() {
           type="number"
           id="guests"
           value={guests}
-          onChange={(e) => setGuests(parseInt(e.target.value || "0", 10))}
+          onChange={(e) => onGuestsChange && onGuestsChange(parseInt(e.target.value || "0", 10))}
           min="1"
           max="10"
           required
@@ -74,7 +72,7 @@ function BookingForm() {
         <select
           id="occasion"
           value={occasion}
-          onChange={(e) => setOccasion(e.target.value)}
+          onChange={(e) => onOccasionChange && onOccasionChange(e.target.value)}
         >
           <option>Birthday</option>
           <option>Anniversary</option>
