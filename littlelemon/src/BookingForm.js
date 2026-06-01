@@ -7,7 +7,9 @@ function BookingForm({
   guests,
   occasion,
   availableTimes = [],
+  bookings = [],
   onDateChange,
+  dispatchTimes,
   onTimeChange,
   onGuestsChange,
   onOccasionChange,
@@ -29,6 +31,7 @@ function BookingForm({
           value={date}
           onChange={(e) => {
             const val = e.target.value;
+            if (dispatchTimes) dispatchTimes({ type: 'update', date: val, bookings });
             if (onDateChange) onDateChange(val);
           }}
           required
