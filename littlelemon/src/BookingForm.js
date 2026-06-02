@@ -17,6 +17,10 @@ function BookingForm({
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!date || !time) {
+      alert('Please select both a date and time');
+      return;
+    }
     const reservation = { date, time, guests, occasion };
     if (onSubmit) onSubmit(reservation);
   };

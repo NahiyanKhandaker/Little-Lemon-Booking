@@ -1,10 +1,13 @@
+/* global fetchAPI, submitAPI */
+
 import './index.css';
 
 import Nav from './Nav';
 import Footer from './Footer';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import HomePage from './HomePage';
 import BookingPage from './BookingPage';
+import ConfirmedBooking from './ConfirmedBooking';
 import { useEffect, useReducer, useState } from 'react';
 
 const initialTimes = [
@@ -18,7 +21,17 @@ const initialTimes = [
 ];
 
 function initializeTimes() {
-  return initialTimes;
+  const today = new Date();
+  try {
+    if (typeof fetchAPI !== 'undefined') {
+      return fetchAPI(today) || initialTimes;
+    }
+    console.warn('fetchAPI not loaded');
+    return initialTimes;
+  } catch (error) {
+    console.error('Error in initializeTimes:', error);
+    return initialTimes;
+  }
 }
 
 function updateTimes(state, action) {
@@ -27,14 +40,22 @@ function updateTimes(state, action) {
       return initializeTimes();
     }
 
-    return initializeTimes().filter(
-      (slot) => !action.bookings?.some((booking) => booking.date === action.date && booking.time === slot)
-    );
+    const dateObj = new Date(action.date);
+    try {
+      if (typeof fetchAPI !== 'undefined') {
+        return fetchAPI(dateObj) || initialTimes;
+      }
+      return initialTimes;
+    } catch (error) {
+      console.error('Error in updateTimes:', error);
+      return initialTimes;
+    }
   }
   return state;
 }
 
 function Main() {
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState("");
   const [bookings, setBookings] = useState([]);
   const [availableTimes, dispatchTimes] = useReducer(updateTimes, [], initializeTimes);
@@ -44,7 +65,23 @@ function Main() {
   }, [bookings, selectedDate]);
 
   const handleBookingSubmit = (reservation) => {
-    setBookings((prev) => [...prev, reservation]);
+    try {
+      if (typeof submitAPI === 'undefined') {
+        console.error('submitAPI not loaded');
+        alert('API not ready. Please refresh and try again.');
+        return;
+      }
+      const success = submitAPI(reservation);
+      if (success) {
+        setBookings((prev) => [...prev, reservation]);
+        navigate('/confirmed');
+      } else {
+        alert('Booking failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      alert('Error submitting booking: ' + error.message);
+    }
   };
 
   return (
@@ -65,6 +102,7 @@ function Main() {
             />
           }
         />
+        <Route path="/confirmed" element={<ConfirmedBooking />} />
       </Routes>
       <Footer />
     </>
