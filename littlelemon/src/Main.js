@@ -41,7 +41,7 @@ function Main() {
 
   useEffect(() => {
     dispatchTimes({ type: 'update', date: selectedDate, bookings });
-  }, [bookings]);
+  }, [bookings, selectedDate]);
 
   const handleBookingSubmit = (reservation) => {
     setBookings((prev) => [...prev, reservation]);
