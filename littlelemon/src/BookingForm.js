@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import "./BookingForm.css";
 
 function BookingForm({
@@ -15,10 +15,45 @@ function BookingForm({
   onOccasionChange,
   onSubmit,
 }) {
+  const [touched, setTouched] = useState({ date: false, time: false, guests: false });
+
+  const today = useMemo(() => {
+    const current = new Date();
+    current.setHours(0, 0, 0, 0);
+    return current;
+  }, []);
+
+  const minDate = today.toISOString().split("T")[0];
+
+  const dateError = useMemo(() => {
+    if (!date) return "Please choose a reservation date.";
+    const selectedDate = new Date(date);
+    selectedDate.setHours(0, 0, 0, 0);
+    if (selectedDate < today) return "Date cannot be in the past.";
+    return "";
+  }, [date, today]);
+
+  const timeError = useMemo(() => {
+    if (!time) return "Please choose a reservation time.";
+    if (!availableTimes.includes(time)) return "Please choose an available time.";
+    return "";
+  }, [time, availableTimes]);
+
+  const guestsError = useMemo(() => {
+    if (!guests || guests < 1 || guests > 10) return "Guests must be between 1 and 10.";
+    return "";
+  }, [guests]);
+
+  const formIsValid = !dateError && !timeError && !guestsError;
+
+  const showDateError = touched.date && dateError;
+  const showTimeError = touched.time && timeError;
+  const showGuestsError = touched.guests && guestsError;
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!date || !time) {
-      alert('Please select both a date and time');
+    setTouched({ date: true, time: true, guests: true });
+    if (!formIsValid) {
       return;
     }
     const reservation = { date, time, guests, occasion };
@@ -26,20 +61,24 @@ function BookingForm({
   };
 
   return (
-    <form className="booking-form" onSubmit={handleSubmit}>
+    <form className="booking-form" onSubmit={handleSubmit} noValidate>
       <div className="form-row">
         <label htmlFor="res-date">Date</label>
         <input
           type="date"
           id="res-date"
           value={date}
+          min={minDate}
+          onBlur={() => setTouched((prev) => ({ ...prev, date: true }))}
           onChange={(e) => {
             const val = e.target.value;
-            if (dispatchTimes) dispatchTimes({ type: 'update', date: val, bookings });
+            setTouched((prev) => ({ ...prev, date: true }));
+            if (dispatchTimes) dispatchTimes({ type: "update", date: val, bookings });
             if (onDateChange) onDateChange(val);
           }}
           required
         />
+        {showDateError && <p className="field-error">{dateError}</p>}
       </div>
 
       <div className="form-row">
@@ -47,7 +86,11 @@ function BookingForm({
         <select
           id="res-time"
           value={time}
-          onChange={(e) => onTimeChange && onTimeChange(e.target.value)}
+          onBlur={() => setTouched((prev) => ({ ...prev, time: true }))}
+          onChange={(e) => {
+            setTouched((prev) => ({ ...prev, time: true }));
+            onTimeChange && onTimeChange(e.target.value);
+          }}
           required
         >
           <option value="" disabled>
@@ -59,6 +102,7 @@ function BookingForm({
             </option>
           ))}
         </select>
+        {showTimeError && <p className="field-error">{timeError}</p>}
       </div>
 
       <div className="form-row">
@@ -67,11 +111,16 @@ function BookingForm({
           type="number"
           id="guests"
           value={guests}
-          onChange={(e) => onGuestsChange && onGuestsChange(parseInt(e.target.value || "0", 10))}
+          onBlur={() => setTouched((prev) => ({ ...prev, guests: true }))}
+          onChange={(e) => {
+            setTouched((prev) => ({ ...prev, guests: true }));
+            onGuestsChange && onGuestsChange(parseInt(e.target.value || "0", 10));
+          }}
           min="1"
           max="10"
           required
         />
+        {showGuestsError && <p className="field-error">{guestsError}</p>}
       </div>
 
       <div className="form-row">
@@ -87,7 +136,9 @@ function BookingForm({
       </div>
 
       <div className="form-row">
-        <button type="submit">Submit reservation</button>
+        <button type="submit" disabled={!formIsValid}>
+          Submit reservation
+        </button>
       </div>
     </form>
   );

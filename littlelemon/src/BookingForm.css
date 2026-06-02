@@ -51,6 +51,18 @@
   transform: translateY(-1px);
 }
 
+.booking-form button[type="submit"]:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.field-error {
+  margin: 0;
+  color: var(--color-error, #b00020);
+  font-size: 0.9rem;
+}
+
 @media (max-width: 600px) {
   .booking-form { width: 100%; padding: var(--space-md); }
 }
