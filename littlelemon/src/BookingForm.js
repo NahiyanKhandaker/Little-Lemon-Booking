@@ -16,6 +16,7 @@ function BookingForm({
   onSubmit,
 }) {
   const [touched, setTouched] = useState({ date: false, time: false, guests: false });
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const today = useMemo(() => {
     const current = new Date();
@@ -45,13 +46,13 @@ function BookingForm({
   }, [guests]);
 
   const formIsValid = !dateError && !timeError && !guestsError;
-
-  const showDateError = touched.date && dateError;
-  const showTimeError = touched.time && timeError;
-  const showGuestsError = touched.guests && guestsError;
+  const showDateError = (touched.date || submitAttempted) && dateError;
+  const showTimeError = (touched.time || submitAttempted) && timeError;
+  const showGuestsError = (touched.guests || submitAttempted) && guestsError;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmitAttempted(true);
     setTouched({ date: true, time: true, guests: true });
     if (!formIsValid) {
       return;
@@ -77,10 +78,15 @@ function BookingForm({
             if (onDateChange) onDateChange(val);
           }}
           required
+          aria-invalid={!!dateError}
+          aria-describedby={showDateError ? 'res-date-error' : undefined}
         />
-        {showDateError && <p className="field-error">{dateError}</p>}
+        {showDateError && (
+          <p id="res-date-error" className="field-error" role="alert">
+            {dateError}
+          </p>
+        )}
       </div>
-
       <div className="form-row">
         <label htmlFor="res-time">Time</label>
         <select
@@ -88,10 +94,13 @@ function BookingForm({
           value={time}
           onBlur={() => setTouched((prev) => ({ ...prev, time: true }))}
           onChange={(e) => {
+            const val = e.target.value;
             setTouched((prev) => ({ ...prev, time: true }));
-            onTimeChange && onTimeChange(e.target.value);
+            onTimeChange && onTimeChange(val);
           }}
           required
+          aria-invalid={!!timeError}
+          aria-describedby={showTimeError ? 'res-time-error' : undefined}
         >
           <option value="" disabled>
             Choose time
@@ -102,7 +111,11 @@ function BookingForm({
             </option>
           ))}
         </select>
-        {showTimeError && <p className="field-error">{timeError}</p>}
+        {showTimeError && (
+          <p id="res-time-error" className="field-error" role="alert">
+            {timeError}
+          </p>
+        )}
       </div>
 
       <div className="form-row">
@@ -119,8 +132,14 @@ function BookingForm({
           min="1"
           max="10"
           required
+          aria-invalid={!!guestsError}
+          aria-describedby={showGuestsError ? 'guests-error' : undefined}
         />
-        {showGuestsError && <p className="field-error">{guestsError}</p>}
+        {showGuestsError && (
+          <p id="guests-error" className="field-error" role="alert">
+            {guestsError}
+          </p>
+        )}
       </div>
 
       <div className="form-row">
@@ -136,7 +155,7 @@ function BookingForm({
       </div>
 
       <div className="form-row">
-        <button type="submit" disabled={!formIsValid}>
+        <button type="submit" aria-label="On Click" disabled={!formIsValid}>
           Submit reservation
         </button>
       </div>

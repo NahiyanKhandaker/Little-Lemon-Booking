@@ -4,7 +4,7 @@
   padding: var(--space-lg);
   border-radius: var(--radius-small);
   box-shadow: var(--shadow-card);
-  margin: var(--space-md) 0; /* align left within its container */
+  margin: var(--space-md) 0;
   display: grid;
   gap: var(--space-md);
 }

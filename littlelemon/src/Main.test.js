@@ -2,7 +2,6 @@ import { initializeTimes, updateTimes } from './Main';
 
 describe('initializeTimes', () => {
   afterEach(() => {
-    // clean up global mock
     delete global.fetchAPI;
   });
 

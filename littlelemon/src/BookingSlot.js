@@ -5,7 +5,7 @@ function BookingSlot({ time, date, guests, occasion, status }) {
   return (
     <li className={`booking-slot booking-slot--${status}`}>
       <div className="slot-header">
-        <span className="slot-time">{time}</span>
+        <time className="slot-time" dateTime={time}>{time}</time>
         <span className="slot-status">{isBooked ? "Booked" : "Available"}</span>
       </div>
       {date && <div className="slot-date">{date}</div>}

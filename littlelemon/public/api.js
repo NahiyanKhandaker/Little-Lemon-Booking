@@ -7,7 +7,7 @@ const seededRandom = function (seed) {
     };
 }
 
-const fetchAPI = function(date) {
+window.fetchAPI = function(date) {
     let result = [];
     let random = seededRandom(date.getDate());
 
@@ -22,6 +22,6 @@ const fetchAPI = function(date) {
     return result.length == 0 ? ['17:00'] : result;
 }
 
-const submitAPI = function(formData) {
+window.submitAPI = function(formData) {
     return true;
 }

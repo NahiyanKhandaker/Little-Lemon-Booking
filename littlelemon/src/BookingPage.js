@@ -31,7 +31,7 @@ function BookingPage({ availableTimes = [], bookings = [], onDateChange, dispatc
   };
 
   return (
-    <main className="booking-page">
+    <main id="main" className="booking-page">
       <section className="booking__container">
         <h1>Reserve a table</h1>
         <div className="booking-content">
