@@ -57,21 +57,30 @@ function Main() {
   const [selectedDate, setSelectedDate] = useState("");
   const [bookings, setBookings] = useState([]);
   const [notification, setNotification] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitDelayMessage, setSubmitDelayMessage] = useState('');
   const [availableTimes, dispatchTimes] = useReducer(updateTimes, [], initializeTimes);
 
   useEffect(() => {
     dispatchTimes({ type: 'update', date: selectedDate, bookings });
   }, [bookings, selectedDate]);
 
-  const handleBookingSubmit = (reservation) => {
+  const handleBookingSubmit = async (reservation) => {
+    if (typeof window.submitAPI === 'undefined') {
+      console.error('submitAPI not loaded');
+      setNotification('API not ready. Please refresh and try again.');
+      alert('API not ready. Please refresh and try again.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitDelayMessage('');
+    const delayTimer = setTimeout(() => {
+      setSubmitDelayMessage('Saving your reservation — this may take a moment.');
+    }, 400);
+
     try {
-      if (typeof window.submitAPI === 'undefined') {
-        console.error('submitAPI not loaded');
-        setNotification('API not ready. Please refresh and try again.');
-        alert('API not ready. Please refresh and try again.');
-        return;
-      }
-      const success = window.submitAPI(reservation);
+      const success = await Promise.resolve().then(() => window.submitAPI(reservation));
       if (success) {
         setBookings((prev) => [...prev, reservation]);
         setNotification('Your reservation was confirmed.');
@@ -85,6 +94,10 @@ function Main() {
       console.error('Error submitting booking:', error);
       setNotification('Error submitting booking.');
       alert('Error submitting booking: ' + error.message);
+    } finally {
+      clearTimeout(delayTimer);
+      setSubmitDelayMessage('');
+      setIsSubmitting(false);
     }
   };
 
@@ -106,6 +119,8 @@ function Main() {
               onDateChange={setSelectedDate}
               dispatchTimes={dispatchTimes}
               onBookingSubmit={handleBookingSubmit}
+              isSubmitting={isSubmitting}
+              submitDelayMessage={submitDelayMessage}
             />
           }
         />

@@ -14,6 +14,8 @@ function BookingForm({
   onGuestsChange,
   onOccasionChange,
   onSubmit,
+  isSubmitting = false,
+  delayMessage = '',
 }) {
   const [touched, setTouched] = useState({ date: false, time: false, guests: false });
   const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -45,19 +47,32 @@ function BookingForm({
     return "";
   }, [guests]);
 
-  const formIsValid = !dateError && !timeError && !guestsError;
+  const occasionError = useMemo(() => {
+    if (!occasion || occasion.trim() === "") return "Please enter an occasion.";
+    return "";
+  }, [occasion]);
+
+  const formIsValid = !dateError && !timeError && !guestsError && !occasionError;
   const showDateError = (touched.date || submitAttempted) && dateError;
   const showTimeError = (touched.time || submitAttempted) && timeError;
   const showGuestsError = (touched.guests || submitAttempted) && guestsError;
+  const showOccasionError = (touched.occasion || submitAttempted) && occasionError;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
     setSubmitAttempted(true);
-    setTouched({ date: true, time: true, guests: true });
+    setTouched({ date: true, time: true, guests: true, occasion: true });
     if (!formIsValid) {
       return;
     }
-    const reservation = { date, time, guests, occasion };
+    const normalizedOccasion = occasion
+      .trim()
+      .replace(/\s+/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+    const reservation = { date, time, guests, occasion: normalizedOccasion };
     if (onSubmit) onSubmit(reservation);
   };
 
@@ -144,21 +159,40 @@ function BookingForm({
 
       <div className="form-row">
         <label htmlFor="occasion">Occasion</label>
-        <select
+        <input
+          type="text"
           id="occasion"
           value={occasion}
-          onChange={(e) => onOccasionChange && onOccasionChange(e.target.value)}
-        >
-          <option>Birthday</option>
-          <option>Anniversary</option>
-        </select>
+          onBlur={() => setTouched((prev) => ({ ...prev, occasion: true }))}
+          onChange={(e) => {
+            const val = e.target.value;
+            setTouched((prev) => ({ ...prev, occasion: true }));
+            onOccasionChange && onOccasionChange(val);
+          }}
+          required
+          aria-invalid={!!occasionError}
+          aria-describedby={showOccasionError ? 'occasion-error' : undefined}
+        />
+        {showOccasionError && (
+          <p id="occasion-error" className="field-error" role="alert">
+            {occasionError}
+          </p>
+        )}
       </div>
 
       <div className="form-row">
-        <button type="submit" aria-label="On Click" disabled={!formIsValid}>
-          Submit reservation
+        <button type="submit" aria-label="On Click" disabled={!formIsValid || isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Submit reservation'}
         </button>
       </div>
+      {(isSubmitting || delayMessage) && (
+        <div className="submission-banner" role="status" aria-live="polite">
+          <span className="spinner" aria-hidden="true" />
+          <span>
+            {delayMessage || 'Saving your reservation...'}
+          </span>
+        </div>
+      )}
     </form>
   );
 }

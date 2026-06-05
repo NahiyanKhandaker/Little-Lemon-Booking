@@ -2,7 +2,16 @@ import React, { useMemo, useState } from "react";
 import BookingForm from "./BookingForm";
 import BookingSlot from "./BookingSlot";
 
-function BookingPage({ availableTimes = [], bookings = [], onDateChange, dispatchTimes, onBookingSubmit, selectedDate = "" }) {
+function BookingPage({
+  availableTimes = [],
+  bookings = [],
+  onDateChange,
+  dispatchTimes,
+  onBookingSubmit,
+  selectedDate = "",
+  isSubmitting = false,
+  submitDelayMessage = '',
+}) {
   const date = selectedDate;
   const [time, setTime] = useState("");
   const [guests, setGuests] = useState(1);
@@ -49,6 +58,8 @@ function BookingPage({ availableTimes = [], bookings = [], onDateChange, dispatc
               onGuestsChange={setGuests}
               onOccasionChange={setOccasion}
               onSubmit={handleSubmit}
+              isSubmitting={isSubmitting}
+              delayMessage={submitDelayMessage}
             />
           </div>
 

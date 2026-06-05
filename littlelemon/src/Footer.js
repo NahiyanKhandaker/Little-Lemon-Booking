@@ -13,7 +13,6 @@ function Footer() {
             <li><a href="/about" aria-label="On Click">About</a></li>
             <li><a href="/menu" aria-label="On Click">Menu</a></li>
             <li><a href="/reservations" aria-label="On Click">Reservations</a></li>
-            <li><a href="/order" aria-label="On Click">Order Online</a></li>
             <li><a href="/login" aria-label="On Click">Login</a></li>
           </ul>
         </div>
