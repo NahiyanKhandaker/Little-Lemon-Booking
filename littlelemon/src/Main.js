@@ -2,10 +2,15 @@ import './index.css';
 
 import Nav from './Nav';
 import Footer from './Footer';
+import Notification from './Notification';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import HomePage from './HomePage';
 import BookingPage from './BookingPage';
 import ConfirmedBooking from './ConfirmedBooking';
+import About from './About';
+import Menu from './Menu';
+import Reservations from './Reservations';
+import Login from './Login';
 import { useEffect, useReducer, useState } from 'react';
 
 const initialTimes = [
@@ -69,7 +74,6 @@ function Main() {
     if (typeof window.submitAPI === 'undefined') {
       console.error('submitAPI not loaded');
       setNotification('API not ready. Please refresh and try again.');
-      alert('API not ready. Please refresh and try again.');
       return;
     }
 
@@ -88,12 +92,10 @@ function Main() {
         setTimeout(() => setNotification(''), 5000);
       } else {
         setNotification('Booking failed. Please try again.');
-        alert('Booking failed. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting booking:', error);
       setNotification('Error submitting booking.');
-      alert('Error submitting booking: ' + error.message);
     } finally {
       clearTimeout(delayTimer);
       setSubmitDelayMessage('');
@@ -103,6 +105,7 @@ function Main() {
 
   return (
     <>
+      <Notification message={notification} onClose={() => setNotification('')} />
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         {notification}
       </div>
@@ -124,6 +127,10 @@ function Main() {
           }
         />
         <Route path="/confirmed" element={<ConfirmedBooking />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/reservations" element={<Reservations />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />
     </>

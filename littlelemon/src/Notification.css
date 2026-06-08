@@ -1,0 +1,17 @@
+.notification {
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  z-index: 1000;
+}
+.notification--info { border-left: 4px solid #0070f3; }
+.notification__message { font-size: 0.95rem; }
+.notification__close { background: transparent; border: none; font-size: 1.1rem; line-height: 1; cursor: pointer; }
