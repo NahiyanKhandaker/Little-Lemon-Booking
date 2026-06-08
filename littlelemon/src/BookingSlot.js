@@ -1,5 +1,3 @@
-import React from "react";
-
 function BookingSlot({ time, date, guests, occasion, status }) {
   const isBooked = status === "booked";
   return (

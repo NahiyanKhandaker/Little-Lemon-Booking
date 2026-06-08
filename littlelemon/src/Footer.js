@@ -9,11 +9,11 @@ function Footer() {
           <div className="footer__brand-copy">
           <h4>Doormat Navigation</h4>
           <ul>
-            <li><a href="/" aria-label="On Click">Home</a></li>
-            <li><a href="/about" aria-label="On Click">About</a></li>
-            <li><a href="/menu" aria-label="On Click">Menu</a></li>
-            <li><a href="/reservations" aria-label="On Click">Reservations</a></li>
-            <li><a href="/login" aria-label="On Click">Login</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/menu">Menu</a></li>
+            <li><a href="/reservations">Reservations</a></li>
+            <li><a href="/login">Login</a></li>
           </ul>
         </div>
       </section>
@@ -22,17 +22,17 @@ function Footer() {
         <h4>Contact</h4>
         <address>
           <p>123 Lemon Street, Chicago, IL 60601</p>
-          <p>Phone: <a href="tel:+13125550199" aria-label="On Click">(312) 555-0199</a></p>
-          <p>Email: <a href="mailto:hello@littlelemon.com" aria-label="On Click">hello@littlelemon.com</a></p>
+          <p>Phone: <a href="tel:+13125550199" aria-label="Call Little Lemon restaurant">(312) 555-0199</a></p>
+          <p>Email: <a href="mailto:hello@littlelemon.com" aria-label="Email Little Lemon restaurant">hello@littlelemon.com</a></p>
         </address>
       </section>
  
       <section className="footer__social">
         <h4>Social Media Links</h4>
         <ul>
-          <li><a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="On Click">Facebook</a></li>
-          <li><a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="On Click">Instagram</a></li>
-          <li><a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="On Click">Twitter</a></li>
+          <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Little Lemon on Facebook">Facebook</a></li>
+          <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Little Lemon on Instagram">Instagram</a></li>
+          <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Little Lemon on Twitter">Twitter</a></li>
         </ul>
       </section>
     </footer>

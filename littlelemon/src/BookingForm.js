@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import "./BookingForm.css";
 
 function BookingForm({
@@ -7,9 +7,7 @@ function BookingForm({
   guests,
   occasion,
   availableTimes = [],
-  bookings = [],
   onDateChange,
-  dispatchTimes,
   onTimeChange,
   onGuestsChange,
   onOccasionChange,
@@ -17,7 +15,7 @@ function BookingForm({
   isSubmitting = false,
   delayMessage = '',
 }) {
-  const [touched, setTouched] = useState({ date: false, time: false, guests: false });
+  const [touched, setTouched] = useState({ date: false, time: false, guests: false, occasion: false });
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const today = useMemo(() => {
@@ -89,7 +87,6 @@ function BookingForm({
           onChange={(e) => {
             const val = e.target.value;
             setTouched((prev) => ({ ...prev, date: true }));
-            if (dispatchTimes) dispatchTimes({ type: "update", date: val, bookings });
             if (onDateChange) onDateChange(val);
           }}
           required
@@ -159,8 +156,7 @@ function BookingForm({
 
       <div className="form-row">
         <label htmlFor="occasion">Occasion</label>
-        <input
-          type="text"
+        <select
           id="occasion"
           value={occasion}
           onBlur={() => setTouched((prev) => ({ ...prev, occasion: true }))}
@@ -172,7 +168,17 @@ function BookingForm({
           required
           aria-invalid={!!occasionError}
           aria-describedby={showOccasionError ? 'occasion-error' : undefined}
-        />
+        >
+          <option value="" disabled>
+            Choose occasion
+          </option>
+          <option value="Birthday">Birthday</option>
+          <option value="Wedding">Wedding</option>
+          <option value="Anniversary">Anniversary</option>
+          <option value="Engagement">Engagement</option>
+          <option value="Graduation">Graduation</option>
+          <option value="Other">Other</option>
+        </select>
         {showOccasionError && (
           <p id="occasion-error" className="field-error" role="alert">
             {occasionError}
@@ -181,7 +187,7 @@ function BookingForm({
       </div>
 
       <div className="form-row">
-        <button type="submit" aria-label="On Click" disabled={!formIsValid || isSubmitting}>
+        <button type="submit" disabled={!formIsValid || isSubmitting}>
           {isSubmitting ? 'Submitting...' : 'Submit reservation'}
         </button>
       </div>

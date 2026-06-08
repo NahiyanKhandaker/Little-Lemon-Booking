@@ -43,8 +43,9 @@ describe('BookingForm validation', () => {
     expect(guestsInput).toHaveAttribute('max', '10');
 
     const occasionInput = screen.getByLabelText(/occasion/i);
-    expect(occasionInput).toHaveAttribute('type', 'text');
+    expect(occasionInput.tagName).toBe('SELECT');
     expect(occasionInput).toHaveAttribute('required');
+    expect(within(occasionInput).getByRole('option', { name: /choose occasion/i })).toBeInTheDocument();
   });
 
   test('shows validation errors and prevents submission when invalid', () => {

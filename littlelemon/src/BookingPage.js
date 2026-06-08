@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import BookingForm from "./BookingForm";
 import BookingSlot from "./BookingSlot";
 
@@ -6,7 +6,6 @@ function BookingPage({
   availableTimes = [],
   bookings = [],
   onDateChange,
-  dispatchTimes,
   onBookingSubmit,
   selectedDate = "",
   isSubmitting = false,
@@ -51,9 +50,7 @@ function BookingPage({
               guests={guests}
               occasion={occasion}
               availableTimes={availableTimes}
-              bookings={bookings}
               onDateChange={handleDateChange}
-              dispatchTimes={dispatchTimes}
               onTimeChange={setTime}
               onGuestsChange={setGuests}
               onOccasionChange={setOccasion}

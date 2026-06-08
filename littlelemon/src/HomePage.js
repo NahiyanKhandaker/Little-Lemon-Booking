@@ -43,7 +43,7 @@ const testimonials = [
 function HomePage() {
   return (
     <main id="main" className="main">
-      <section className="hero">
+      <section id="home" className="hero">
         <div className="hero__text">
           <h1>Little Lemon</h1>
           <h2>Chicago</h2>
@@ -51,7 +51,7 @@ function HomePage() {
             We are a family-owned Mediterranean restaurant, focused on traditional
             recipes served with a modern twist.
           </p>
-          <Link className="hero__button" to="/booking" aria-label="On Click">
+          <Link className="hero__button" to="/booking">
             Reserve a Table
           </Link>
         </div>
@@ -62,11 +62,11 @@ function HomePage() {
           alt="Little Lemon Restaurant"
         />
       </section>
-      <section className="hero">
+      <section id="specials" className="hero">
         <div className="hero__text">
           <div className="hero_header">
             <h1>Specials</h1>
-            <button aria-label="On Click">Online Menu</button>
+            <button type="button">Online Menu</button>
           </div>
 
           <div className="specials">
@@ -79,9 +79,9 @@ function HomePage() {
               <p className="special-card__description">
                 Crisp vegetables, tangy feta, and house vinaigrette in a refreshing classic.
               </p>
-              <a className="special-card__link" href="#" aria-label="On Click">
+              <button type="button" className="special-card__link">
                 Order now
-              </a>
+              </button>
             </div>
 
             <div className="special-card">
@@ -93,9 +93,9 @@ function HomePage() {
               <p className="special-card__description">
                 Toasted bread topped with ripe tomatoes, basil, garlic, and olive oil.
               </p>
-              <a className="special-card__link" href="#" aria-label="On Click">
+              <button type="button" className="special-card__link">
                 Order now
-              </a>
+              </button>
             </div>
 
             <div className="special-card">
@@ -107,15 +107,15 @@ function HomePage() {
               <p className="special-card__description">
                 A bright citrus finish with silky texture and a light, sweet finish.
               </p>
-              <a className="special-card__link" href="#" aria-label="On Click">
+              <button type="button" className="special-card__link">
                 Order now
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="hero testimonials-section">
+      <section id="testimonials" className="hero testimonials-section">
         <div className="hero_header2">
           <h1>Testimonials</h1>
         </div>
@@ -142,7 +142,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="hero about" name="about">
+      <section id="about" className="hero about">
         <div className="hero__text">
           <h1>About</h1>
           <h2>Chicago</h2>

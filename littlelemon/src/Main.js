@@ -117,7 +117,6 @@ function Main() {
               bookings={bookings}
               selectedDate={selectedDate}
               onDateChange={setSelectedDate}
-              dispatchTimes={dispatchTimes}
               onBookingSubmit={handleBookingSubmit}
               isSubmitting={isSubmitting}
               submitDelayMessage={submitDelayMessage}
